@@ -17,6 +17,16 @@ bool CApp::OnInit(){
     pWindow = SDL_CreateWindow("qbRayTracer", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SDL_WINDOW_WIDTH, SDL_WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
     if(pWindow != NULL){
         pRenderer = SDL_CreateRenderer(pWindow, -1, 0);
+        m_image.Initialize(SDL_WINDOW_WIDTH, SDL_WINDOW_HEIGHT, pRenderer);
+
+        //create some color variations
+        for(int x = 0;x<SDL_WINDOW_WIDTH;x++){
+            for(int y = 0;y<SDL_WINDOW_HEIGHT;y++){
+                double red = (static_cast<double>(x))/SDL_WINDOW_WIDTH * 255;
+                double green = (static_cast<double>(y))/SDL_WINDOW_WIDTH * 255;
+                m_image.SetPixel(x, y, red, green, 0);
+            }
+        }
     }
     else{
         return false;
@@ -55,6 +65,7 @@ void CApp::OnRender(){
     //Make background color white
     SDL_SetRenderDrawColor(pRenderer, 255, 255, 255, 255); //rgbalpha
     SDL_RenderClear(pRenderer);
+    m_image.Display();
     SDL_RenderPresent(pRenderer);
 }
 
